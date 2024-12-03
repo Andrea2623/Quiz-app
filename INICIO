@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #eef676, #33c2ff);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #24045c;
+        }
+
+        #quiz-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 800px;
+            text-align: center; /* Centrar texto dentro del contenedor */
+        }
+
+        h1, h2 {
+            font-family: 'Roboto', cursive;
+            color: #24045c;
+            font-size: 2.5em;
+            margin: 0.5em 0;
+        }
+
+        h3 {
+            font-size: 1.5em;
+        }
+
+        label, p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.2em;
+            margin: 0.5em 0;
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #58ecea;
+            border-radius: 8px;
+            width: calc(100% - 32px); /* Ajustar para el padding */
+            font-size: 1em;
+            box-sizing: border-box; /* Incluir padding y border en el ancho total */
+        }
+
+        button {
+            background-color: #3cc6d2;
+            color: #fff;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #2b9fbd;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(1);
+        }
+
+        #question-container {
+            margin: 20px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div id="start-quiz">
+            <h1>¡Bienvenido al Quiz!</h1>
+            <label for="name"><h3>¿Cómo te llamas?</h3></label>
+            <input type="text" id="name" placeholder="Ingresa tu nombre aquí" required>
+            <button onclick="selectCategory()">Seleccionar Categoría</button>
+        </div>
+        <div id="category-selection" class="hidden">
+            <h2>Selecciona una categoría</h2>
+            <!-- Añade aquí los botones de categorías -->
+        </div>
+        <div id="quiz" class="hidden">
+            <h2 id="quiz-name"></h2>
+            <div id="question-container"></div>
+            <button onclick="nextQuestion()">Siguiente</button>
+        </div>
+        <div id="result" class="hidden">
+            <h2>Resultados del Quiz</h2>
+            <p id="result-message"></p>
+            <button onclick="restartQuiz()">Reiniciar Quiz</button>
+        </div>
+    </div>
+    <script>
+        const quizData = {
+            ARTE: [
+                {
+                    question: "¿Quién pintó la Mona Lisa?",
+                    answers: ["José Antonio Velásquez", "Carlos Garay", "Pablo Zelaya Sierra"],
+                    correct: 2
+                },
+                // Agrega aquí las 9 preguntas restantes para ARTE
+            ],
+            // Agrega aquí los datos restantes
+        };
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let playerName = "";
+        let selectedCategory = "";
+        let questions = [];
+
+        function selectCategory() {
+            playerName = document.getElementById("name").value;
+            if (playerName.trim() === "") {
+                alert("Por favor, ingresa tu nombre.");
+                return;
+            }
+            // Guardar el nombre del usuario en el almacenamiento local
+            localStorage.setItem('playerName', playerName);
+            // Redirigir a la página de bienvenida
+            window.location.href = "usuario2.html";
+        }
+
+        function startQuiz(category) {
+            selectedCategory = category;
+            questions = quizData[category];
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById("category-selection").classList.add("hidden");
+            document.getElementById("quiz").classList.remove("hidden");
+            document.getElementById("quiz-name").innerText = `Hola, ${playerName}! Buena suerte en ${category}!`;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionContainer = document.getElementById("question-container");
+            questionContainer.innerHTML = "";
+
+            const currentQuestion = questions[currentQuestionIndex];
+            const questionElement = document.createElement("p");
+            questionElement.innerText = currentQuestion.question;
+            questionContainer.appendChild(questionElement);
+
+            currentQuestion.answers.forEach((answer, index) => {
+                const answerElement = document.createElement("button");
+                answerElement.innerText = answer;
+                answerElement.onclick = () => checkAnswer(index);
+                questionContainer.appendChild(answerElement);
+            });
+        }
+
+        function checkAnswer(selectedIndex) {
+            const currentQuestion = questions[currentQuestionIndex];
+            if (selectedIndex === currentQuestion.correct) {
+                score++;
+            }
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById("quiz").classList.add("hidden");
+            document.getElementById("result").classList.remove("hidden");
+            const percentage = (score / questions.length) * 100;
+            document.getElementById("result-message").innerText = `${playerName}, tu puntaje es ${score} de ${questions.length} (${percentage.toFixed(2)}%).`;
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            playerName = "";
+            selectedCategory = "";
+            questions = [];
+            document.getElementById("name").value = "";
+            document.getElementById("start-quiz").classList.remove("hidden");
+            document.getElementById("result").classList.add("hidden");
+        }
+    </script>
+</body>
+</html>
