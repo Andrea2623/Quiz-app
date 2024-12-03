@@ -1,0 +1,106 @@
+<!DOCTYPE html>  
+<html lang="es">  
+
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Bienvenida</title>  
+    <style>  
+        body {  
+            font-family: 'Roboto', sans-serif;  
+            text-align: center;  
+            margin: 0;  
+            padding: 0;  
+            background: linear-gradient(135deg, #eef676, #33c2ff);  
+            height: 100vh;  
+            display: flex;  
+            justify-content: center;  
+            align-items: center;  
+            color: #24045c;  
+            opacity: 0; /* Inicialmente invisible */  
+            transform: scale(0.9); /* Inicialmente más pequeño */  
+            transition: opacity 2s ease-in-out, transform 2s ease-in-out;  
+        }  
+
+        body.show {  
+            opacity: 1;  
+            transform: scale(1);  
+        }  
+
+        #welcome-message {  
+            font-size: 36px;  
+            padding: 20px;  
+            background: rgba(255, 255, 255, 0.8);  
+            border-radius: 30px;  
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);  
+            position: relative;  
+            overflow: hidden;  
+            max-width: 80%;  
+        }  
+
+        #welcome-message::before {  
+            content: '';  
+            position: absolute;  
+            top: 0;  
+            left: 50%;  
+            width: 400px;  
+            height: 400px;  
+            background: radial-gradient(circle, rgba(255, 233, 113, 0.6) 0%, rgba(255, 200, 88, 0.4) 100%);  
+            border-radius: 50%;  
+            z-index: 0;  
+            transform: translate(-50%, -50%);  
+            animation: pulse 6s infinite;  
+        }  
+
+        #welcome-message p {  
+            position: relative;  
+            z-index: 1;  
+            font-weight: bold;  
+        }  
+
+        @keyframes pulse {  
+            0% {  
+                transform: translate(-50%, -50%) scale(0.95);  
+            }  
+            50% {  
+                transform: translate(-50%, -50%) scale(1.05);  
+            }  
+            100% {  
+                transform: translate(-50%, -50%) scale(0.95);  
+            }  
+        }  
+    </style>  
+</head>  
+
+<body>  
+    <div id="welcome-message">  
+        <p id="welcome-text"></p>  
+    </div>  
+    <script>  
+        // Obtener el nombre del usuario desde el almacenamiento local  
+        const playerName = localStorage.getItem('playerName') || 'Jugador'; // Valor por defecto  
+
+        // Mostrar el mensaje de bienvenida  
+        document.getElementById('welcome-text').innerText = `¡Hola ${playerName}! 🌟 Prepárate para poner tus conocimientos a prueba!`;  
+
+        // Función para añadir la clase 'show' al body y activar el efecto de aparición  
+        function showPage() {  
+            document.body.classList.add('show');  
+        }  
+
+        // Iniciar la animación de aparición después de que la página haya cargado  
+        window.onload = function() {  
+            setTimeout(showPage, 100); // Aplicar la clase con un pequeño retraso para asegurar que la transición se aplique  
+        };  
+
+        // Después de 4 segundos, redirigir a la página de selección de categorías  
+        setTimeout(() => {  
+            document.body.style.opacity = 0;  
+            setTimeout(() => {  
+                window.location.href = 'generos.html';  
+            }, 2000); // Espera 2 segundos para asegurar el efecto de desvanecimiento  
+        }, 4000); // 4000 milisegundos = 4 segundos  
+    </script>  
+</body>  
+</html>
+
