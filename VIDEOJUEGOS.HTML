@@ -1,0 +1,122 @@
+<!DOCTYPE html>  
+<html lang="es">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Introducción a la Historia</title>  
+    <link rel="stylesheet" href="styles.css">  
+    <style>  
+        body {  
+            display: flex;  
+            flex-direction: column;  
+            align-items: center;  
+            justify-content: center;  
+            min-height: 100vh;  
+            margin: 0;  
+            overflow: hidden;  /* Para evitar los desbordamientos del body */  
+            background-color: #000; /* Color de fondo negro */  
+        }  
+
+        /* Contenedor para la imagen de fondo */  
+        .background {  
+            position: absolute; /* Posición absoluta para cubrir todo el body */  
+            top: 0;   
+            left: 0;   
+            width: 100%;   
+            height: 100%;   
+            background-image: url('imagenes/videojuegosss.jpg'); /* Asegúrate de que esta imagen esté en la carpeta adecuada */  
+            background-size: cover;  
+            background-position: center;  
+            filter: blur(5px); /* Aplicar desenfoque a la imagen de fondo */  
+            z-index: 0; /* Coloca la capa de fondo detrás */  
+        }  
+
+        .content {  
+            position: relative; /* Relativo para colocar el contenido en relación al fondo */  
+            display: flex;  
+            flex-direction: column;  
+            align-items: center;  
+            justify-content: center;  
+            text-align: center;  
+            color: #fff; /* Color del texto en blanco para resaltar sobre el fondo */  
+            z-index: 1; /* Asegurar que el contenido esté por encima del fondo */  
+            background-color: rgba(0,0,0,0.5); /* Fondo semitransparente para legibilidad */  
+            padding: 30px; /* Aumentar el espaciado interior para dar más espacio a los elementos */  
+            border-radius: 15px; /* Bordes redondeados */  
+        }  
+
+        h1 {  
+            font-family: "Times New Roman", serif; /* Tipografía decorativa */  
+            font-size: 60px;  /* Aumentar el tamaño del título */  
+            margin-bottom: 30px;  /* Aumentar el margen inferior */  
+            color: #e1c16d; /* Color amarillo dorado */  
+        }  
+
+        .welcome-text {  
+            font-size: 30px;   /* Aumentar el tamaño de la fuente del texto de bienvenida */  
+            font-family: 'Times New Roman', serif; /* Fuente clásica */  
+            margin: 20px 40px;   
+            line-height: 1.6;   /* Aumentar el interlineado para una mejor legibilidad */  
+            color: #ffffff; /* Color blanco para el texto */  
+        }  
+
+        .start-btn {  
+            display: inline-block;  
+            font-family: "Arial", sans-serif;  
+            font-size: 30px;  /* Aumentar el tamaño de la fuente del botón */  
+            color: #ffffff; /* Color del texto en blanco */  
+            background-color: #e9d732; /* Color de fondo del botón */  
+            padding: 20px 40px;  /* Aumentar el padding para botones más grandes */  
+            border: 2px solid #fdf90f; /* Borde dorado */  
+            border-radius: 50px; /* Bordes redondeados para un aspecto más elegante */  
+            text-decoration: none;  
+            margin: 15px;  
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Transición más suave */  
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agregar sombra */  
+        }  
+
+        .start-btn:hover {  
+            background-color: #fdf90f; /* Cambio de color en el hover */  
+            transform: translateY(-3px); /* Elevar ligeramente el botón en hover */  
+            cursor: pointer; /* Cambiar el cursor para indicar interactividad */  
+        }
+
+        .back-btn {  
+            position: absolute;   
+            bottom: 20px;   
+            left: 20px;   
+            background-color: transparent; /* Fondo transparente para el botón de volver */  
+        }  
+
+        .back-btn img {  
+            margin-right: 10px; /* Espacio entre la imagen y el texto */  
+            max-width: 150px; /* Tamaño de la imagen dentro del botón aumentado */  
+            height: auto;  
+        }  
+    </style>  
+</head>  
+<body onload="fadeIn()">  
+    <div class="background"></div> <!-- Contenedor de fondo borroso -->  
+    <div class="content">  
+        <img src="imagenes/videojuegos.jpeg" width="200px" alt="CULTURA GENERAL">  
+        <h1>VIDEOJUEGOS</h1>  
+        <div class="welcome-text">  
+            ¡Prepárense para el desafío del joystick! En este quiz de videojuegos, pondremos a prueba sus habilidades y conocimientos sobre mundos virtuales, personajes icónicos y tramas épicas. ¡Carguen sus respuestas y que empiece la partida! 🎮🚀
+        </div>  
+        <a href="VIDEOJUEGOS1.HTML" class="start-btn">¡Empecemos!</a>  
+    </div>  
+    <a href="generos.html" class="back-btn">  
+        <img src="imagenes/yyy.png" alt="Volver">  
+    </a>  
+
+    <script>  
+        function fadeIn() {  
+            document.body.style.opacity = 1; // Cambia la opacidad a 1 para mostrar el contenido  
+        }  
+
+        window.onload = function() {  
+            setTimeout(fadeIn, 100); // Espera para aplicar la transición suavemente  
+        };  
+    </script>  
+</body>  
+</html>
