@@ -1,0 +1,207 @@
+<!DOCTYPE html>  
+<html lang="es">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Elija una Categoría</title>  
+    <style>  
+        body {  
+            display: flex;  
+            flex-direction: column;  
+            align-items: center;  
+            justify-content: center;  
+            min-height: 100vh;  
+            margin: 0;  
+            font-family: 'Comic Sans MS', cursive, sans-serif;  
+            position: relative;  
+            overflow: hidden;  
+        }  
+
+        /* Estilos para el video de fondo */  
+        .background-video {  
+            position: absolute;  
+            top: 0;  
+            left: 0;  
+            width: 100%;  
+            height: 100%;  
+            object-fit: cover;  
+            z-index: -1;  
+        }  
+
+        h1 {  
+            text-align: center;  
+            margin-bottom: 30px;  
+            font-family: 'Lobster', cursive;  
+            font-size: 4em;  
+            color: #0004ff;  
+            text-shadow: 3px 3px #33ff2c;  
+        }  
+
+        .categories-row {  
+            display: flex;  
+            flex-wrap: wrap;  
+            justify-content: center;  
+            margin-bottom: 30px;  
+        }  
+
+        .start-btn {  
+            display: flex;  
+            flex-direction: column;  
+            align-items: center;  
+            justify-content: center;  
+            padding: 30px 60px;  
+            font-family: "Times New Roman", Times, serif;  
+            font-size: 20px;  
+            color: #070138;  
+            text-decoration: none;  
+            border-radius: 30px;  
+            margin: 15px;  
+            text-align: center;  
+            background: linear-gradient(135deg, #4690ff, #58ecea);  
+            transition: transform 0.2s, background 0.3s ease;  
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);  
+            position: relative;  
+            z-index: 1; /* Por defecto, todos los botones tienen el mismo z-index */  
+        }  
+
+        .start-btn:hover {  
+            background: linear-gradient(135deg, #007ac0, #85f5ff);  
+            transform: scale(2.05);  
+            z-index: 2; /* Aumenta el z-index en el estado hover para que el botón se muestre encima de los demás */  
+        }  
+
+        .start-btn img {  
+            margin-bottom: 15px;  
+            max-width: 100px;  
+            height: auto;  
+            transition: transform 1.2s;  
+        }  
+
+        .start-btn:hover img {  
+            transform: rotate(15deg);  
+        }  
+
+        .fade-out {  
+            opacity: 0;  
+        }
+
+        /* Animación de levantamiento y cambio de color */
+        @keyframes liftAndColorChange {
+            0% {
+                transform: translateY(0);
+                background: linear-gradient(135deg, #4690ff, #58ecea);
+            }
+            50% {
+                transform: translateY(-15px);
+                background: #ff9a9e; /* Rojo claro */
+            }
+            100% {
+                transform: translateY(0);
+                background: linear-gradient(135deg, #4690ff, #58ecea);
+            }
+        }
+
+        /* Animación de ola */
+        @keyframes waveEffect {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Aplicar animaciones */
+        .start-btn.lift {
+            animation: liftAndColorChange 0.5s ease-in-out forwards; /* Acelerado a 0.5s */
+        }
+
+        /* Evitar la animación cuando el ratón está sobre el botón */
+        .start-btn:hover.lift {
+            animation: none;
+        }
+    </style>  
+</head>  
+<body>  
+    <video class="background-video" autoplay muted loop>  
+        <source src="imagenes/VIDEO.mp4" type="video/mp4"> <!-- Asegúrate de que la ruta sea correcta -->  
+        Tu navegador no soporta la etiqueta de video.  
+    </video>  
+
+    <h1>CATEGORÍAS</h1>  
+
+    <div class="categories-row">  
+        <a href="ARTEPRINCIPAL.HTML" class="start-btn" onclick="fadeOutPage(event, 'ARTEPRINCIPAL.HTML')">  
+            <img src="imagenes/ARTE.jpeg" width="150px" alt="ARTE"> ARTE  
+        </a>  
+        <a href="HISTORIAPRINCIPAL.HTML" class="start-btn" onclick="fadeOutPage(event, 'HISTORIAPRINCIPAL.HTML')">  
+            <img src="imagenes/HISTORIA.png" width="150px" alt="HISTORIA"> HISTORIA  
+        </a>  
+        <a href="GEOGRAFIAPRINCIPAL.HTML" class="start-btn" onclick="fadeOutPage(event, 'GEOGRAFIAPRINCIPAL.HTML')">  
+            <img src="imagenes/GEOGRAFIA.jpeg" width="150px" alt="GEOGRAFIA"> GEOGRAFÍA  
+        </a>  
+        <a href="CULTURAGENERALPRINCIPAL.HTML" class="start-btn" onclick="playAudioAndFadeOut(event, 'CULTURAGENERALPRINCIPAL.HTML')">  
+            <img src="imagenes/CULTURA.png" width="150px" alt="CULTURA GENERAL"> CULTURA GENERAL  
+        </a>  
+        <a href="CINEPRINCIPAL.HTML" class="start-btn" onclick="fadeOutPage(event, 'CINEPRINCIPAL.HTML')">  
+            <img src="imagenes/HCINE.png" width="150px" alt="CINE"> CINE  
+        </a>  
+    </div>  
+
+    <div class="categories-row">  
+        <a href="musica.html" class="start-btn" onclick="fadeOutPage(event, 'musica.html')">  
+            <img src="imagenes/music.jpg" width="150px" alt="MÚSICA"> MÚSICA  
+        </a>  
+        <a href="futbol.html" class="start-btn" onclick="fadeOutPage(event, 'futbol.html')">  
+            <img src="imagenes/FUTBOL.jpeg" width="150px" alt="FÚTBOL"> FÚTBOL  
+        </a>  
+        <a href="gramatica.html" class="start-btn" onclick="fadeOutPage(event, 'gramatica.html')">  
+            <img src="imagenes/gramatica.png" width="150px" alt="GRAMÁTICA"> GRAMÁTICA  
+        </a>  
+        <a href="videojuegos.html" class="start-btn" onclick="fadeOutPage(event, 'videojuegos.html')">  
+            <img src="imagenes/videojuegos.jpeg" width="150px" alt="VIDEOJUEGOS"> VIDEOJUEGOS  
+        </a>  
+        <a href="idiomas.html" class="start-btn" onclick="fadeOutPage(event, 'idiomas.html')">  
+            <img src="imagenes/idiomas.webp" width="150px" alt="IDIOMAS"> IDIOMAS  
+        </a>  
+    </div>  
+
+
+    <script>  
+        function fadeOutPage(event, url) {  
+            event.preventDefault(); // Evita la redirección inmediata  
+            document.body.classList.add('fade-out');  
+            setTimeout(function() {  
+                window.location.href = url; // Redirige a la nueva página después de la transición  
+            }, 500); // Debe coincidir con la duración de la transición CSS  
+        }  
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const buttons = document.querySelectorAll('.start-btn');
+            let delay = 0;
+
+            function animateButtons() {
+                buttons.forEach((button, i) => {
+                    setTimeout(() => {
+                        if (!button.matches(':hover')) { // Solo animar si no está en hover
+                            button.classList.add('lift');
+                        }
+                        // Limpiar la clase lift después de la animación
+                        setTimeout(() => {
+                            button.classList.remove('lift');
+                        }, 500); // 0.5 segundos para limpiar la animación
+                    }, i * 200); // 0.5 segundos de retraso entre cada botón
+                });
+            }
+
+            animateButtons();
+            // Repetir la animación en bucle cada 2 segundos
+            setInterval(animateButtons, 2000); // 2 segundos entre cada ciclo completo de animación
+        });
+    </script>  
+</body>  
+</html>
