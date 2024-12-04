@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Arte - Historia</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: url('https://th.bing.com/th/id/OIP.mnepLnYyLPeRYIgR5cAUzgHaEK?rs=1&pid=ImgDetMain') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif;
+            color: #000000; /* Color de texto negro */
+            overflow: hidden; /* Evita el scroll si el fondo se expande */
+            opacity: 0; /* Comienza con opacidad 0 */
+            transition: opacity 1s ease-in-out; /* Transición suave para la opacidad */
+        }
+
+        body.visible {
+            opacity: 1; /* Opacidad 1 cuando el contenido está visible */
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Filtro negro semi-transparente para el desenfoque */
+            backdrop-filter: blur(10px); /* Efecto de desenfoque */
+            z-index: -1; /* Pone el overlay detrás del contenido */
+        }
+
+        .question-box {
+            background-color: rgba(0, 60, 255, 0.8); /* Fondo oscuro con transparencia */
+            padding: 50px; /* Aumentar el padding para un cuadro más grande */
+            border-radius: 15px; /* Bordes redondeados más pronunciados */
+            margin: 20px auto;
+            width: 90%; /* Aumentar el ancho del cuadro del cuestionario */
+            max-width: 900px; /* Ajustar el máximo ancho del cuadro */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative; /* Para posicionar correctamente los elementos */
+        }
+
+        #question {
+            font-size: 36px; /* Aumentar el tamaño de la fuente */
+            font-weight: bold;
+            margin: 20px 0;
+            color: #000000; /* Color de texto negro */
+        }
+
+        .btn-container .btn {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #000000; /* Color del texto de los botones */
+            border: none;
+            padding: 20px 40px; /* Aumentar el padding para botones más grandes */
+            margin: 15px;
+            border-radius: 15px; /* Bordes redondeados más grandes */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 24px; /* Tamaño de fuente más grande para los botones */
+        }
+
+        .btn-container .btn:hover {
+            background-color: #8a7263;
+            transform: translateY(-3px); /* Efecto de levantamiento al pasar el ratón */
+        }
+
+        .start-btn, .end-btn {
+            padding: 25px 40px; /* Aumentar el padding para botones más grandes */
+            font-size: 26px; /* Tamaño de fuente más grande para los botones */
+            border-radius: 15px; /* Bordes redondeados más grandes */
+            border: none;
+            margin: 20px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+            color: #ffffff; /* Color del texto de los botones */
+        }
+
+        .start-btn {
+            background-color: #7bac22;
+        }
+
+        .start-btn:hover {
+            background-color: #94ff69;
+            transform: translateY(-3px);
+        }
+
+        .end-btn {
+            background-color: #ff4631; /* Rojo intenso */
+        }
+
+        .end-btn:hover {
+            background-color: #e74c3c;
+            transform: translateY(-3px);
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .correct {
+            background-color: green !important;
+            color: white !important;
+        }
+
+        .incorrect {
+            background-color: red !important;
+            color: white !important;
+        }
+
+        #hearts-container {
+            margin: 10px 0 20px;
+        }
+
+        #progress-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 30px;
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        #progress-bar {
+            height: 100%;
+            width: 100%;
+            background-color: #7bac22;
+            border-radius: 10px;
+            transition: width 1s linear, background-color 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div id="quiz">
+        <div id="question-container" class="question-box">
+            <div class="main-page">
+                <label><strong>Número Siete</strong></label>
+                <br><br>
+                <div id="question">¿Cuál de estos personajes es conocido por su habilidad para congelar a sus oponentes en Mortal Kombat?</div>
+            </div>
+            <br>
+            <div id="answer-buttons" class="btn-container">
+                <button class="btn" onclick="checkAnswer(this, 'incorrect')">  Sonya Blade</button>
+                <button class="btn" onclick="checkAnswer(this, 'incorrect')">Shang Tsung</button>
+                <button class="btn" onclick="checkAnswer(this, 'correct')">Sub-Zero</button>
+            </div>
+            <div id="message"></div>
+            <div id="hearts-container">
+                <span id="hearts"></span>
+            </div>
+            <br>
+            <button class="end-btn hide" id="end-btn" onclick="confirmEnd()">Terminar</button>
+            <button class="start-btn hide" id="next-btn" onclick="nextQuestion()">Siguiente pregunta</button>
+            <div id="final-score" class="hide">
+                <p id="score-text"></p>
+            </div>
+        </div>
+    </div>
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+    <script>
+        let correctAnswers = parseInt(localStorage.getItem('correctAnswers')) || 0;
+        let totalQuestions = 20; // Ajusta este número según las preguntas
+        let timer;
+        let timeLeft = 10; // Tiempo en segundos
+
+        function startTimer() {
+            updateProgressBar();
+            timer = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timeLeft = 0;
+                    updateProgressBar();
+                    // Redirige a RESULTADOS.HTML si el tiempo se acabó
+                    window.location.href = 'RESULTADOS.HTML';
+                } else {
+                    updateProgressBar();
+                }
+            }, 1000);
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progress-bar');
+            const percentage = (timeLeft / 10) * 100;
+            progressBar.style.width = `${percentage}%`;
+
+            if (timeLeft > 7) {
+                progressBar.style.backgroundColor = '#7bac22'; // Verde
+            } else if (timeLeft > 4) {
+                progressBar.style.backgroundColor = '#f1c40f'; // Amarillo
+            } else {
+                progressBar.style.backgroundColor = '#c0392b'; // Rojo
+            }
+        }
+
+        function checkAnswer(button, answer) {
+    clearInterval(timer); // Detén el temporizador si el usuario responde
+    if (answer === 'correct') {
+        button.classList.add('correct');
+        correctAnswers++;
+        // Guardar en localStorage
+        localStorage.setItem('correctAnswers', correctAnswers);
+    } else {
+        button.classList.add('incorrect');
+    }
+    document.querySelectorAll('.btn').forEach(btn => btn.disabled = true);
+
+    // Muestra los botones "Terminar" y "Siguiente pregunta"
+    document.getElementById('end-btn').classList.remove('hide');
+    document.getElementById('next-btn').classList.remove('hide');
+        }
+
+        function nextQuestion() {
+            // Lógica para cargar la siguiente pregunta
+            window.location.href = 'VIDEOJUEGOS8.HTML';
+        }
+
+        function confirmEnd() {
+            if (confirm('¿Estás seguro de que quieres terminar el cuestionario? Si sales, tendrás que volver a empezar las preguntas.')) {
+                endQuiz();
+            }
+        }
+
+        function endQuiz() {
+            // Resetea el contador de respuestas correctas en el almacenamiento local
+            localStorage.setItem('correctAnswers', '0');
+            window.location.href = 'Generos.html'; // Redirecciona a la página generos.html
+        }
+
+        function showFinalScore() {
+            document.getElementById('question-container').classList.add('hide');
+            document.getElementById('final-score').classList.remove('hide');
+
+            let score = (correctAnswers / totalQuestions) * 100;
+            document.getElementById('score-text').innerText = `Puntaje final: ${score}%`;
+        }
+
+        // Cuando la página esté completamente cargada, haz visible el contenido y comienza el temporizador
+        window.addEventListener('load', () => {
+            document.body.classList.add('visible');
+            startTimer();
+        });
+    </script>
+</body>
+</html>
